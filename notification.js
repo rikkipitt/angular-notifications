@@ -2,16 +2,14 @@
 
 angular.module('notifications', []).
   factory('$notification', ['$timeout',function($timeout){
-
-    console.log('notification service online');
     var notifications = JSON.parse(localStorage.getItem('$notifications')) || [],
-        queue = [];
+      queue = [];
 
     var settings = {
-      info: { duration: 5000, enabled: true },
-      warning: { duration: 5000, enabled: true },
-      error: { duration: 5000, enabled: true },
-      success: { duration: 5000, enabled: true },
+      info: { duration: 6000, enabled: true },
+      warning: { duration: 6000, enabled: true },
+      error: { duration: 6000, enabled: true },
+      success: { duration: 6000, enabled: true },
       progress: { duration: 0, enabled: true },
       custom: { duration: 35000, enabled: true },
       details: true,
@@ -212,24 +210,19 @@ angular.module('notifications', []).
      * Finally, the directive should have its own controller for
      * handling all of the notifications from the notification service
      */
-    console.log('this is a new directive');
-    var html =
-      '<div class="dr-notification-wrapper" ng-repeat="noti in queue">' +
-        '<div class="dr-notification-close-btn" ng-click="removeNotification(noti)">' +
-          '<i class="icon-remove"></i>' +
-        '</div>' +
-        '<div class="dr-notification">' +
-          '<div class="dr-notification-image dr-notification-type-{{noti.type}}" ng-switch on="noti.image">' +
-            '<i class="icon-{{noti.icon}}" ng-switch-when="false"></i>' +
-            '<img ng-src="{{noti.image}}" ng-switch-default />' +
-          '</div>' +
-          '<div class="dr-notification-content">' +
-            '<h3 class="dr-notification-title">{{noti.title}}</h3>' +
-            '<p class="dr-notification-text">{{noti.content}}</p>' +
-          '</div>' +
-        '</div>' +
+    var html =  '<div id="gritter-notice-wrapper" ng-repeat="noti in queue">' +
+      '<div id="gritter-item-6" class="gritter-item-wrapper" style="">' +
+      '<div class="gritter-top"></div>' +
+      '<div class="gritter-item">' +
+      '<div class="gritter-close" ng-click="removeNotification(noti)"></div>' +
+      '<div class="gritter-without-image">' +
+      '<span class="gritter-title">{{noti.title}}</span>' +
+      '<p data-ng-repeat="message in noti.content">{{message}}</p>' +
+      '</div>' +
+      '<div style="clear:both"></div>' +
+      '</div><div class="gritter-bottom"></div>' +
+      '</div>' +
       '</div>';
-
 
     function link(scope, element, attrs){
       var position = attrs.notifications;
@@ -253,7 +246,7 @@ angular.module('notifications', []).
           $scope.queue.splice($scope.queue.indexOf(noti), 1);
         };
       }
-    ]
+      ]
 
     };
   }]);
